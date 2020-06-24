@@ -1,7 +1,26 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+      <span>Shell Application</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-<a href="javascript:router.go('a')">Route to A</a> |
-<a href="javascript:router.go('b')">Route to B</a> |
-<a href="javascript:router.go('a', 'a')">Jump to A within A</a> |
-<a href="javascript:router.go('a', 'b')">Jump to B within A</a>
+  <mat-sidenav [opened]="isExpended" class="example-sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+               [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-nav-list>
+      <button mat-button (click)="toggle('a')">App A</button>
+    </mat-nav-list>
+    <mat-nav-list>
+      <button mat-button (click)="toggle('b')">App B</button>
+    </mat-nav-list>
+    <mat-nav-list>
+      <button mat-button (click)="toggle('a', 'a')">App A Comp A</button>
+    </mat-nav-list>
+    <mat-nav-list>
+      <button mat-button (click)="toggle('a', 'b')">App A comp B</button>
+    </mat-nav-list>
+  </mat-sidenav>
+</div>
 
-<div id="outlet"></div>
+<div class="padding-app" id="outlet" #outlet></div>

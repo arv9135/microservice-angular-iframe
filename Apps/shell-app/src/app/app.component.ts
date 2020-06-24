@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material/sidenav';
 
 
 @Component({
@@ -127,7 +129,38 @@ export class AppComponent implements OnInit {
     })
   }
 };
+  mobileQuery: MediaQueryList;
+  isExpended: boolean = false;
+  // Sidemenu
+  @ViewChild('snav') sidenav: MatSidenav;
+  @ViewChild('outlet') outlet: ElementRef;
+  private _mobileQueryListener: () => void;
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if (this.eRef.nativeElement.contains(event.target)) {
+    } else {
+      this.sidenav.close();
+    }
+  }
 
+
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private eRef: ElementRef) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  toggle(path?: string, subRoute?: string) {
+    if (!!path) {
+      this.router.go(path, subRoute);
+    }
+    this.sidenav.toggle();
+    this.isExpended = this.sidenav.opened;
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
   ngOnInit(): void {
     this.router.config(this.config);
     this.router.init();
@@ -137,7 +170,7 @@ export class AppComponent implements OnInit {
   config = [
     {
       path: 'a',
-      app: 'http://127.0.0.1:8080/#a'
+      app: 'http://localhost:4200/'
     },
     {
       path: 'b',

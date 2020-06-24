@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app-c';
-
   childApp = {
     sendHeight: function () {
       var that = this;
@@ -20,7 +20,8 @@ export class AppComponent {
       html.clientHeight, html.scrollHeight, html.offsetHeight);
       */
 
-      var height = html.offsetHeight;
+      //var height = html.offsetHeight;
+      var height = 500;
       parent.postMessage({ message: 'set-height', appPath: that.childConfig.appId, height: height }, '*');
     },
     config: function (config) {
@@ -42,4 +43,22 @@ export class AppComponent {
       window.addEventListener('resize', this.sendHeight.bind(this), true);
     }
   }
+
+  constructor(private router: Router) {
+    this.initChildRouter();
+  }
+    ngOnInit(): void {
+      this.childApp.config({ appId: 'a' });
+      this.childApp.init();
+    }
+
+  // Sync Subroutes
+  initChildRouter() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: NavigationEnd) => {
+      this.childApp.sendRoute(e.url);
+    });
+
+    this.childApp.registerForRouteChange(url => this.router.navigateByUrl(url));
+  }
+
 }
