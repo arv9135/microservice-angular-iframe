@@ -1,6 +1,18 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\app-c",
+    "\\app-c\\src",
+    "\\app-c\\src\\app",
+    "\\app-c\\src\\app\\comp-a",
+    "\\app-c\\src\\app\\Shared",
+    "\\Apps",
+    "\\Apps\\shell-app",
+    "\\Apps\\shell-app\\src",
+    "\\Apps\\shell-app\\src\\app",
+    "\\Apps\\shell-app\\src\\app\\Shared",
+    "\\Apps\\shell-app\\src\\app\\Shared\\Services"
   ],
+  "SelectedNode": "\\Apps\\shell-app\\src\\app\\app.component.ts",
   "PreviewInSolutionExplorer": false
 }
